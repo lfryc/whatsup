@@ -5,15 +5,28 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+.run(function ($ionicPlatform) {
+  $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
+    if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
-    if(window.StatusBar) {
+    if (window.StatusBar) {
       StatusBar.styleDefault();
     }
   });
+})
+
+.controller('MainCtrl', function () {
+  var $scope = this;
+
+  $scope.messages = [
+    { text: "Hello there" },
+    { text: "How are you?" }
+  ];
+
+  $scope.sendMessage = function (newMessageText) {
+    $scope.messages.push({ text: newMessageText });
+  }
 })
