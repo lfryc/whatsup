@@ -5,39 +5,69 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform, messageList, $rootScope, messageEndpoint) {
   $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
+    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    function onNotification(event) {
+      var version = event.version;
+      messageEndpoint.get( version )
+        .then( function(response) {
+          messageList.messages.push(response.data);
+        } )
+        .catch(function (e) {
+          errorHandler(e);
+        })
+
+    }
+
+    function successHandler() {
+      console.log("Subscribed");
+    }
+
+    function errorHandler(e) {
+      alert("Error: " + e);
+    }
+
+    if (typeof push !== 'undefined') {
+      push.register(onNotification, successHandler, errorHandler);
+    } else {
+      alert('Push plugin not installed!');
+    }
   });
 })
 
+.factory('messageList', function() {
+  return {
+    messages: []
+  }
+})
 
-.controller('MainCtrl', function ( messageEndpoint ) {
+
+.controller('MainCtrl', function ( messageEndpoint, messageList ) {
   var $scope = this;
 
-  $scope.messages = [];
+  $scope.messages = messageList.messages;
 
   $scope.sendMessage = function (newMessageText) {
     var newMessage = { author: 'Lukas', text: newMessageText };
-    $scope.messages.push( newMessage );
+    messageList.messages.push( newMessage );
     messageEndpoint.send( newMessage );
   }
 })
 
 .factory('messageEndpoint', function ( $http ) {
-    var endpointUrl = 'http://localhost:8080/whatsup-rs/rest/messages';
+    var endpointUrl = 'http://10.200.138.172:8080/whatsup-rs/rest/messages';
     return {
       'get': function( id ) {
-        return $http.get({
-          url: endpointUrl + '/' + id
-        });
+        return $http.get( endpointUrl + '/' + id );
       },
       'send': function( message ) {
         return $http.post( endpointUrl, message, {

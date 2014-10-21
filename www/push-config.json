@@ -1,0 +1,16 @@
+{
+  "pushServerURL": "http://10.200.138.172:8080/ag-push",
+  "android": {
+    "senderID": "315466463876",
+    "variantID": "988971c5-82c8-4232-91a2-083394addf29",
+    "variantSecret": "8283a07f-0736-4205-b6e9-ac7e1eea29c0"
+  },
+  "ios": {
+    "variantID": "<variantID e.g. 1234456-234320>",
+    "variantSecret": "<variantSecret e.g. 1234456-234320>"
+  },
+  "firefoxos": {
+    "variantID": "5c328ffd-7157-40df-9ac3-1758837fb911",
+    "variantSecret": "baa74aad-d8e5-4069-a66a-970a4db399c1"
+  }
+}
