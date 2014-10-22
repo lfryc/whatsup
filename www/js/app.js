@@ -17,7 +17,7 @@ angular.module('starter', ['ionic'])
     }
 
     function onNotification(event) {
-      var version = event.version;
+      var version = event.version || event.payload.version;
       messageEndpoint.get( version )
         .then( function(response) {
           messageList.messages.push(response.data);
@@ -29,7 +29,7 @@ angular.module('starter', ['ionic'])
     }
 
     function successHandler() {
-      console.log("Subscribed");
+      alert("Subscribed");
     }
 
     function errorHandler(e) {
@@ -37,6 +37,7 @@ angular.module('starter', ['ionic'])
     }
 
     if (typeof push !== 'undefined') {
+      alert('initiating');
       push.register(onNotification, successHandler, errorHandler);
     } else {
       alert('Push plugin not installed!');
@@ -64,7 +65,7 @@ angular.module('starter', ['ionic'])
 })
 
 .factory('messageEndpoint', function ( $http ) {
-    var endpointUrl = 'http://10.200.138.172:8080/whatsup-rs/rest/messages';
+    var endpointUrl = 'http://192.168.15.104:8080/whatsup-rs/rest/messages';
     return {
       'get': function( id ) {
         return $http.get( endpointUrl + '/' + id );

@@ -1,5 +1,5 @@
 {
-  "pushServerURL": "http://10.200.138.172:8080/ag-push",
+  "pushServerURL": "http://192.168.15.104:8080/ag-push/",
   "android": {
     "senderID": "315466463876",
     "variantID": "988971c5-82c8-4232-91a2-083394addf29",
@@ -12,5 +12,9 @@
   "firefoxos": {
     "variantID": "5c328ffd-7157-40df-9ac3-1758837fb911",
     "variantSecret": "baa74aad-d8e5-4069-a66a-970a4db399c1"
+  },
+  "windows": {
+    "variantID": "b3ddb379-9397-4753-86d7-d667c13df341",
+    "variantSecret": "9787773a-938b-4334-bf89-f17a13c2665b"
   }
 }
