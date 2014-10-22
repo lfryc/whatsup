@@ -17,7 +17,7 @@ angular.module('starter', ['ionic'])
     }
 
     function onNotification(event) {
-      var version = event.version || event.payload.version;
+      var version = event.version || event.payload.version || event.payload[0].Value;
       messageEndpoint.get( version )
         .then( function(response) {
           messageList.messages.push(response.data);
