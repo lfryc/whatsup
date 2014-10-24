@@ -5,7 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
-.run(function ($ionicPlatform, messageList, $rootScope, messageEndpoint) {
+.run(function ($ionicPlatform, messageList, status, messageEndpoint, $rootScope) {
+	
   $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -24,23 +25,26 @@ angular.module('starter', ['ionic'])
         } )
         .catch(function (e) {
           errorHandler(e);
-        })
-
+        });
     }
 
     function successHandler() {
-      alert("Subscribed");
+      status.text = "WhatsUp";
+      $rootScope.$digest();
     }
 
     function errorHandler(e) {
-      alert("Error: " + e);
+      status.text = "Error: " + e;
+      $rootScope.$digest();
     }
 
     if (typeof push !== 'undefined') {
-      alert('initiating');
+    	status.text = "Connecting...";
+        $rootScope.$digest();
       push.register(onNotification, successHandler, errorHandler);
     } else {
-      alert('Push plugin not installed!');
+      status.text = 'Push plugin not installed!';
+      $rootScope.$digest();
     }
   });
 })
@@ -51,21 +55,27 @@ angular.module('starter', ['ionic'])
   }
 })
 
+.factory('status', function() {
+  return {
+    text: 'Loading...'
+  }
+})
 
-.controller('MainCtrl', function ( messageEndpoint, messageList ) {
+.controller('MainCtrl', function ( messageEndpoint, messageList, status ) {
   var $scope = this;
 
   $scope.messages = messageList.messages;
+  $scope.status = status;
 
   $scope.sendMessage = function (newMessageText) {
     var newMessage = { author: 'Lukas', text: newMessageText };
     messageList.messages.push( newMessage );
     messageEndpoint.send( newMessage );
-  }
+  };
 })
 
 .factory('messageEndpoint', function ( $http ) {
-    var endpointUrl = 'http://192.168.15.104:8080/whatsup-rs/rest/messages';
+    var endpointUrl = '';
     return {
       'get': function( id ) {
         return $http.get( endpointUrl + '/' + id );
@@ -79,5 +89,11 @@ angular.module('starter', ['ionic'])
         }, message);
       }
     };
+})
+
+.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
 })
 

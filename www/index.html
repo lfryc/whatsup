@@ -5,6 +5,11 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
 
+	<style>
+	[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+	}
+	</style>
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
@@ -21,28 +26,30 @@
     <!-- your app's js -->
     <script src="js/app.js"></script>
   </head>
-  <body ng-app="starter" class="platform-wp8 platform-cordova platform-webview">
+  <body ng-app="starter" ng-controller="MainCtrl as main" class="platform-wp8 platform-cordova platform-webview">
 
-    <ion-pane ng-controller="MainCtrl as main">
+    <ion-pane>
       <ion-header-bar class="bar-positive">
-        <h1 class="title">WhatsUp</h1>
+        <h1 class="title">
+        	{{main.status.text}}
+        	<span ng-hide="main.status">Loading..</span>
+        </h1>
       </ion-header-bar>
       <ion-content>
         <ul class="list">
-          <li class="item" ng-repeat="message in main.messages">
+          <li class="item" ng-repeat="message in main.messages | reverse">
             {{ message.text }}
           </li>
         </ul>
       </ion-content>
-      <div class="bar bar-footer item-input-inset footer-item-input-insert">
-        <label class="item-input-wrapper">
-          <i class="icon ion-ios7-search placeholder-icon"></i>
-          <input type="text" placeholder="Type message..." ng-model="newMessageText">
-        </label>
-        <button class="button button-ok" ng-click="main.sendMessage(newMessageText); newMessageText = ''">
-          OK
-        </button>
-      </div>
+      <form ng-submit="main.sendMessage(messageText); messageText = ''">
+	      <ion-footer-bar>
+	        <label class="item-input-wrapper">
+	          <i class="icon ion-search placeholder-icon"></i>
+	          <input type="text" placeholder="Type message..." ng-model="messageText">
+	        </label>
+	      </ion-footer-bar>
+      </form>
     </ion-pane>
   </body>
 </html>
